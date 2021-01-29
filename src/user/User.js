@@ -2,6 +2,7 @@ import Data from '../Data';
 import { hashPassword } from '../../lib/utils';
 import Mongo from '../Mongo';
 import Meteor from '../Meteor.js';
+import Accounts from './Accounts';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const Users = new Mongo.Collection("users");
@@ -128,6 +129,21 @@ const User = {
       User._loginWithToken(value);
     }
   },
+
+  loginWithSms (phoneNumber, verificationCode, callback) {
+    Accounts.callLoginMethod({
+      methodArguments: [{
+        sms: true,
+        phoneNumber,
+        verificationCode
+      }],
+      userCallback: callback
+    });
+  },
+
+  sendVerificationCode (phoneNumber, callback) {
+    Meteor.call("accounts-sms.sendVerificationCode", phoneNumber, callback);
+  }
 };
 
 export default User;
