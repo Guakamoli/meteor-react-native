@@ -131,14 +131,34 @@ const User = {
   },
 
   loginWithSms (phoneNumber, verificationCode, callback) {
-    Accounts.callLoginMethod({
-      methodArguments: [{
-        sms: true,
-        phoneNumber,
-        verificationCode
-      }],
-      userCallback: callback
-    });
+    Meteor.call(
+      'login',
+      {
+        methodArguments: [{
+          sms: true,
+          phoneNumber,
+          verificationCode
+        }],
+        userCallback: callback
+      },
+      (err, result) => {
+        User._endLoggingIn();
+
+        User._handleLoginCallback(err, result);
+        console.log(err, "err");
+        console.log(result, "result");
+
+        typeof callback == 'function' && callback(err);
+      }
+    );
+    // Accounts.callLoginMethod({
+    //   methodArguments: [{
+    //     sms: true,
+    //     phoneNumber,
+    //     verificationCode
+    //   }],
+    //   userCallback: callback
+    // });
   },
 
   sendVerificationCode (phoneNumber, callback) {
