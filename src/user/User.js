@@ -2,7 +2,6 @@ import Data from '../Data';
 import { hashPassword } from '../../lib/utils';
 import Mongo from '../Mongo';
 import Meteor from '../Meteor.js';
-import Accounts from './Accounts';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const Users = new Mongo.Collection("users");
