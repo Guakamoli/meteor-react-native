@@ -132,7 +132,7 @@ const User = {
 
   loginWithSms (phoneNumber, verificationCode, callback) {
     Meteor.call(
-      'login',
+      'callLoginMethod',
       {
         methodArguments: [{
           sms: true,
