@@ -147,6 +147,26 @@ const User = {
 
   sendVerificationCode (phoneNumber, callback) {
     Meteor.call("accounts-sms.sendVerificationCode", phoneNumber, callback);
+  },
+
+  loginWithEmail(emailAddress, verificationCode, callback) {
+    Meteor.call(
+      'login',
+      {
+        email: true,
+        emailAddress,
+        verificationCode
+      },
+      (err, result) => {
+        User._endLoggingIn();
+        User._handleLoginCallback(err, result);
+        typeof callback == 'function' && callback(err);
+      }
+    );
+  },
+
+  sendEmailCode (emailAddress, callback) {
+    Meteor.call("sendEmailCode", emailAddress, callback);
   }
 };
 
